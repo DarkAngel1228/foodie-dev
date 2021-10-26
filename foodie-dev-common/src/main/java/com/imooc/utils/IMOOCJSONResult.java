@@ -48,5 +48,9 @@ public class IMOOCJSONResult {
     }
 
 
+    public Boolean isOk() {
+        return this.status == 200;
+    }
+
 
 }
