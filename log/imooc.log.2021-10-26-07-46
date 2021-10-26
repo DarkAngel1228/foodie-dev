@@ -1,0 +1,29 @@
+2021-10-26 07:46:58 INFO  Version:21 - HV000001: Hibernate Validator 6.0.16.Final
+2021-10-26 07:46:58 INFO  Application:50 - Starting Application on MS-JCVIXFNKATUS with PID 10968 (E:\www\java\foodie-dev\foodie-dev-api\target\classes started by Administrator in E:\www\java\foodie-dev)
+2021-10-26 07:46:58 INFO  Application:679 - The following profiles are active: dev
+2021-10-26 07:46:58 WARN  ClassPathMapperScanner:146 - No MyBatis mapper was found in '[com.imooc]' package. Please check your configuration.
+2021-10-26 07:46:58 WARN  ClassPathMapperScanner:44 - No MyBatis mapper was found in '[com.imooc]' package. Please check your configuration.
+2021-10-26 07:46:59 INFO  TomcatWebServer:90 - Tomcat initialized with port(s): 8080 (http)
+2021-10-26 07:46:59 INFO  ContextLoader:296 - Root WebApplicationContext: initialization completed in 770 ms
+2021-10-26 07:46:59 INFO  ThreadPoolTaskExecutor:171 - Initializing ExecutorService 'applicationTaskExecutor'
+2021-10-26 07:46:59 WARN  AnnotationConfigServletWebServerApplicationContext:557 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'dataSource' defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Hikari.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.zaxxer.hikari.HikariDataSource]: Factory method 'dataSource' threw exception; nested exception is org.springframework.boot.autoconfigure.jdbc.DataSourceProperties$DataSourceBeanCreationException: Failed to determine suitable jdbc url
+2021-10-26 07:46:59 INFO  ThreadPoolTaskExecutor:208 - Shutting down ExecutorService 'applicationTaskExecutor'
+2021-10-26 07:46:59 ERROR LoggingFailureAnalysisReporter:42 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Failed to configure a DataSource: 'url' attribute is not specified and no embedded datasource could be configured.
+
+Reason: Failed to determine suitable jdbc url
+
+
+Action:
+
+Consider the following:
+	If you want an embedded database (H2, HSQL or Derby), please put it on the classpath.
+	If you have database settings to be loaded from a particular profile you may need to activate it (no profiles are currently active).
+
