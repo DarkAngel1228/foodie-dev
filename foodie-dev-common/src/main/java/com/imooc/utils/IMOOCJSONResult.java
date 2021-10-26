@@ -79,6 +79,42 @@ public class IMOOCJSONResult {
         this.data = data;
     }
 
+    public static IMOOCJSONResult build(Integer status, String msg, Object data) {
+        return new IMOOCJSONResult(status, msg, data);
+    }
+
+    public static IMOOCJSONResult build(Integer status, String msg, Object data, String ok) {
+        return new IMOOCJSONResult(status, msg, data, ok);
+    }
+
+    public static IMOOCJSONResult ok(Object data) {
+        return new IMOOCJSONResult(data);
+    }
+
+    public static IMOOCJSONResult ok() {
+        return new IMOOCJSONResult(null);
+    }
+
+    public static IMOOCJSONResult errorMsg(String msg) {
+        return new IMOOCJSONResult(500, msg, null);
+    }
+
+    public static IMOOCJSONResult errorMap(Object data) {
+        return new IMOOCJSONResult(501, "error", data);
+    }
+
+    public static IMOOCJSONResult errorTokenMsg(String msg) {
+        return new IMOOCJSONResult(502, msg, null);
+    }
+
+    public static IMOOCJSONResult errorException(String msg) {
+        return new IMOOCJSONResult(555, msg, null);
+    }
+
+    public static IMOOCJSONResult errorUserQQ(String msg) {
+        return new IMOOCJSONResult(556, msg, null);
+    }
+
 
     public Boolean isOk() {
         return this.status == 200;
