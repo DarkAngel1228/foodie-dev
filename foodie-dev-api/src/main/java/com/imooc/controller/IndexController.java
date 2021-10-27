@@ -69,4 +69,5 @@ public class IndexController {
         List<NewItemsVO> list = categoryService.getSixNewsLazy(rootCatId);
         return IMOOCJSONResult.ok(list);
     }
+
 }
