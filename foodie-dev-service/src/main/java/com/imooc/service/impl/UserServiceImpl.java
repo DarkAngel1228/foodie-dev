@@ -4,6 +4,7 @@ import com.imooc.mapper.UsersMapper;
 import com.imooc.pojo.Users;
 import com.imooc.pojo.bo.UserBO;
 import com.imooc.service.UserService;
+import org.n3r.idworker.Sid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
@@ -15,13 +16,14 @@ public class UserServiceImpl implements UserService {
     public UsersMapper usersMapper;
 
     @Autowired
-    //public Sid sid;
+    public Sid sid;
 
     @Override
     public boolean queryUsernameIsExist(String username) {
         Example userExample = new Example(Users.class);
         Example.Criteria criteria = userExample.createCriteria();
         criteria.andEqualTo("username", username);
+
 
 
         return false;
