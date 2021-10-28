@@ -49,6 +49,7 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println(user.getPassword());
 
         user.setNickname(userBO.getUsername());
         user.setFace(USER_FACE);
@@ -61,6 +62,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Users queryUserForLogin(String username, String password) {
-        return null;
+        Example userExample = new Example(Users.class);
+        Example.Criteria criteria = userExample.createCriteria();
+        criteria.andEqualTo("username", username);
+        criteria.andEqualTo("password", password);
+
+        Users result = usersMapper.selectOneByExample(userExample);
+
+        return result;
+
     }
 }
