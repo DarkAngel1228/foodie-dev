@@ -107,6 +107,7 @@ public class PassportController {
 
         userResult = setNullProperty(userResult);
 
+        System.out.println(JsonUtils.objectToJson(userResult));
         CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(userResult), true);
 
         // TODO 生成用户token，存入redis会话

@@ -16,7 +16,7 @@ public class CorsConfig {
     public CorsFilter corsFilter() {
         // 1.添加cors配置信息
         CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin("http://www.foodie-dev.com:8080");
+        config.addAllowedOrigin("http://localhost:8080");
 
         // 设置是否发送cookie信息
         config.setAllowCredentials(true);
