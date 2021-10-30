@@ -7,6 +7,20 @@ public class AddressBO {
 
     private String addressId;
 
+    @Override
+    public String toString() {
+        return "AddressBO{" +
+                "addressId='" + addressId + '\'' +
+                ", userId='" + userId + '\'' +
+                ", receiver='" + receiver + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", province='" + province + '\'' +
+                ", city='" + city + '\'' +
+                ", district='" + district + '\'' +
+                ", detail='" + detail + '\'' +
+                '}';
+    }
+
     private String userId;
     private String receiver;
     private String mobile;
