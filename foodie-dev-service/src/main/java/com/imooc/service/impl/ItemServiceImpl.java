@@ -3,6 +3,7 @@ package com.imooc.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.imooc.enums.CommentLevel;
+import com.imooc.enums.YesOrNo;
 import com.imooc.mapper.*;
 import com.imooc.pojo.*;
 import com.imooc.pojo.vo.*;
@@ -154,6 +155,12 @@ public class ItemServiceImpl implements ItemService {
         return itemsMapperCustom.queryItemsBySpecIds(specIdsList);
     }
 
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public ItemsSpec queryItemSpecById(String specId) {
+        return itemsSpecMapper.selectByPrimaryKey(specId);
+    }
+
 
     private PagedGridResult setterPageGrid(List<?> list, Integer page) {
         PageInfo<?> pageList = new PageInfo<>(list);
@@ -164,5 +171,32 @@ public class ItemServiceImpl implements ItemService {
         grid.setTotal(pageList.getPages());
 
         return grid;
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public String queryItemMainImgById(String itemId) {
+        ItemsImg itemsImg = new ItemsImg();
+        itemsImg.setItemId(itemId);
+        itemsImg.setIsMain(YesOrNo.YES.type);
+        ItemsImg result = itemsImgMapper.selectOne(itemsImg);
+
+        return result != null ? result.getUrl() : "";
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public void decreaseItemSpecStock(String specId, int buyCounts) {
+        /**
+         * synchronized 不推荐使用，集群下无用，性能低下
+         * 锁数据库 不推荐使用，导致数据库性能低下
+         * 推荐使用：分布式锁 zookeeper redis
+         * 现在使用：数据库的乐观锁
+         */
+        int result = itemsMapperCustom.decreaseItemSpecStock(specId, buyCounts);
+
+        if (result != 1) {
+            throw new RuntimeException("订单创建失败，原因：库存不足");
+        }
     }
 }
