@@ -27,4 +27,7 @@ public interface CenterUserService {
      * @return
      */
     public Users updateUserFace(String userId, String faceUrl);
+
+    class MyOrdersService {
+    }
 }
