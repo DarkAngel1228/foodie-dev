@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Api(value = "订单相关", tags = {"订单相关的api接口"})
-@RequestMapping("order")
+@RequestMapping("orders")
 @RestController
 public class OrderController extends BaseController{
     public static final Logger logger = LoggerFactory.getLogger(OrderController.class);

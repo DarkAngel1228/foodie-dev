@@ -21,7 +21,7 @@ import java.util.List;
 
 @Api(value = "商品接口", tags = {"商品信息展示的相关接口"})
 @RestController
-@RequestMapping("item")
+@RequestMapping("items")
 public class ItemsController extends BaseController {
 
     @Autowired

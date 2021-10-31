@@ -537,7 +537,7 @@
 					var serverUrl = app.serverUrl;
 					axios.defaults.withCredentials = true;
 					axios.post(
-							serverUrl + '/order/create',
+							serverUrl + '/orders/create', 
 							{
 								"userId": userInfo.id,
 								"itemSpecIds": itemSpecIds,
@@ -661,7 +661,7 @@
 					var serverUrl = app.serverUrl;
 					axios.defaults.withCredentials = true;
 					axios.post(
-							serverUrl + '/address/setDefault?userId=' + userInfo.id + "&addressId=" + addressId,
+							serverUrl + '/address/setDefalut?userId=' + userInfo.id + "&addressId=" + addressId, 
 							{},
 							{
 								headers: {
