@@ -7,6 +7,7 @@ import com.imooc.mapper.OrderStatusMapper;
 import com.imooc.mapper.OrdersMapper;
 import com.imooc.pojo.*;
 import com.imooc.pojo.bo.SubmitOrderBO;
+import com.imooc.pojo.vo.MerchantOrdersVO;
 import com.imooc.pojo.vo.OrderVO;
 import com.imooc.service.AddressService;
 import com.imooc.service.ItemService;
@@ -110,6 +111,18 @@ public class OrderServiceImpl implements OrderService {
         waitPayOrderStatus.setCreatedTime(new Date());
         orderStatusMapper.insert(waitPayOrderStatus);
 
-        return null;
+        // 4. 构建商户订单，用于传给支付中心
+        MerchantOrdersVO merchantOrdersVO = new MerchantOrdersVO();
+        merchantOrdersVO.setMerchantOrderId(orderId);
+        merchantOrdersVO.setMerchantUserId(userId);
+        merchantOrdersVO.setAmount(realPayAmount + postAmount);
+        merchantOrdersVO.setPayMethod(payMethod);
+
+        // 5.构建自定义订单vo
+        OrderVO orderVO = new OrderVO();
+        orderVO.setOrderId(orderId);
+        orderVO.setMerchantOrdersVO(merchantOrdersVO);
+
+        return orderVO;
     }
 }
