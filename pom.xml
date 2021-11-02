@@ -78,6 +78,14 @@
             <artifactId>mapper-spring-boot-starter</artifactId>
             <version>2.1.5</version>
         </dependency>
+
+        <!-- 引入 redis 依赖 -->
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+            <version>2.0.0.RELEASE</version>
+        </dependency>
         <!--pagehelper -->
         <dependency>
             <groupId>com.github.pagehelper</groupId>
