@@ -75,7 +75,20 @@ public class ShopcatController extends BaseController{
         }
 
         // 用户在页面删除购物车中的商品数据，如果此时用户已经登录，则需要同步删除后端购物车中的商品
-        String shopcartJson = redisOperator.get(FOODIE_SHOPCART + ":" + userId);
+        String shopCartJson = redisOperator.get(FOODIE_SHOPCART + ":" + userId);
+        if (StringUtils.isNotBlank(shopCartJson)) {
+            List<ShopcartBO> shopCartList = JsonUtils.jsonToList(shopCartJson, ShopcartBO.class);
+            for (ShopcartBO sc : shopCartList) {
+                String specId = sc.getSpecId();
+                if (specId.equals(itemSpecId)) {
+                    shopCartList.remove(sc);
+                    break;
+                }
+            }
+
+            redisOperator.set(FOODIE_SHOPCART + ":" + userId, JsonUtils.objectToJson(shopCartList));
+        }
+
 
         return IMOOCJSONResult.ok();
     }
