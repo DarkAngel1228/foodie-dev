@@ -6,6 +6,7 @@ import com.imooc.mapper.OrderItemsMapper;
 import com.imooc.mapper.OrderStatusMapper;
 import com.imooc.mapper.OrdersMapper;
 import com.imooc.pojo.*;
+import com.imooc.pojo.bo.ShopcartBO;
 import com.imooc.pojo.bo.SubmitOrderBO;
 import com.imooc.pojo.vo.MerchantOrdersVO;
 import com.imooc.pojo.vo.OrderVO;
@@ -13,12 +14,16 @@ import com.imooc.service.AddressService;
 import com.imooc.service.ItemService;
 import com.imooc.service.OrderService;
 import com.imooc.utils.DateUtil;
+import com.imooc.utils.RedisOperator;
 import org.n3r.idworker.Sid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -40,8 +45,11 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private Sid sid;
 
+    @Autowired
+    private RedisOperator redisOperator;
+
     @Override
-    public OrderVO createOrder(SubmitOrderBO submitOrderBO) {
+    public OrderVO createOrder(List<ShopcartBO> shopCartList, SubmitOrderBO submitOrderBO) {
         String userId = submitOrderBO.getUserId();
         String addressId = submitOrderBO.getAddressId();
         String itemSpecIds = submitOrderBO.getItemSpecIds();
@@ -72,11 +80,13 @@ public class OrderServiceImpl implements OrderService {
         String[] itemsSpecIdArr = itemSpecIds.split(",");
         Integer totalAmount = 0; // 商品原价累计
         Integer realPayAmount = 0; // 优惠后的实际支付价格累计
+        List<ShopcartBO> toBeRemoveShopCartList = new ArrayList<>();
 
         for (String itemSpecId : itemsSpecIdArr) {
-            // TODO 整合redis后，商品购买的数量重新从redis的购物车中获取
-            int buyCounts = 1;
-
+            ShopcartBO cartItem = getBuyCountsFromShopCart(shopCartList, itemSpecId);
+            // 整合redis后，商品购买的数量重新从redis的购物车中获取
+            int buyCounts = cartItem.getBuyCounts();
+            toBeRemoveShopCartList.add(cartItem);
             // 2.1 根据规格id，查询规格的具体信息，主要获取价格
             ItemsSpec itemsSpec = itemService.queryItemSpecById(itemSpecId);
             totalAmount += itemsSpec.getPriceNormal() * buyCounts;
@@ -126,7 +136,7 @@ public class OrderServiceImpl implements OrderService {
         OrderVO orderVO = new OrderVO();
         orderVO.setOrderId(orderId);
         orderVO.setMerchantOrdersVO(merchantOrdersVO);
-
+        orderVO.setToBeRemovedShopCatList(toBeRemoveShopCartList);
         return orderVO;
     }
 
@@ -176,8 +186,21 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
+    /**
+     * 从redis中的购物车里获取商品
+     * @param shopCartList
+     * @param specId
+     * @return
+     */
+    private ShopcartBO getBuyCountsFromShopCart(List<ShopcartBO> shopCartList, String specId) {
+        for (ShopcartBO cart : shopCartList) {
+            if (cart.getSpecId().equals(specId)) {
+                return cart;
+            }
+        }
 
-
+        return null;
+    }
 
 
 

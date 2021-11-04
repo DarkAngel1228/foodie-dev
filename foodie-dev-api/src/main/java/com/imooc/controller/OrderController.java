@@ -59,7 +59,7 @@ public class OrderController extends BaseController{
         List<ShopcartBO> shopCartList = JsonUtils.jsonToList(shopCartJson, ShopcartBO.class);
 
         // 1. 创建订单
-        OrderVO orderVO = orderService.createOrder(submitOrderBO);
+        OrderVO orderVO = orderService.createOrder(shopCartList, submitOrderBO);
         String orderId = orderVO.getOrderId();
         // 2. 创建订单以后，移除购物车中已结算（已提交）的商品
         /**
