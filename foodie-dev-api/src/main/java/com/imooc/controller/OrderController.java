@@ -53,7 +53,7 @@ public class OrderController extends BaseController{
             return IMOOCJSONResult.errorMsg("支付方式不支持！");
         }
         String shopCartJson = redisOperator.get(FOODIE_SHOPCART + ":" + submitOrderBO.getUserId());
-        if (StringUtils.isNotBlank(shopCartJson)) {
+        if (StringUtils.isBlank(shopCartJson)) {
             return IMOOCJSONResult.errorMsg("购物数据不正确");
         }
         List<ShopcartBO> shopCartList = JsonUtils.jsonToList(shopCartJson, ShopcartBO.class);
