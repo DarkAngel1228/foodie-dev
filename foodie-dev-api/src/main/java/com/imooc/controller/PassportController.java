@@ -3,6 +3,7 @@ package com.imooc.controller;
 import com.imooc.pojo.Users;
 import com.imooc.pojo.bo.ShopcartBO;
 import com.imooc.pojo.bo.UserBO;
+import com.imooc.pojo.vo.UsersVO;
 import com.imooc.service.UserService;
 import com.imooc.utils.*;
 import io.swagger.annotations.Api;
@@ -79,11 +80,13 @@ public class PassportController extends BaseController{
         // 5.实现注册
         Users userResult = userService.createUser(userBO);
 
-        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(userResult), true);
 
-        userResult = setNullProperty(userResult);
+        // userResult = setNullProperty(userResult);
 
-        // TODO 生成用户token，存入redis会话
+        // 生成用户token，存入redis会话
+        UsersVO usersVO = conventUsersVO(userResult);
+        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(usersVO), true);
+
         // 同步购物车数据
         syncShopCartData(userResult.getId(), request, response);
         return IMOOCJSONResult.ok(userResult);
@@ -108,12 +111,13 @@ public class PassportController extends BaseController{
             return IMOOCJSONResult.errorMsg("用户名或密码不正确");
         }
 
-        userResult = setNullProperty(userResult);
+        // userResult = setNullProperty(userResult);
 
-        System.out.println(JsonUtils.objectToJson(userResult));
-        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(userResult), true);
+        // 生成用户token，存入redis会话
+        UsersVO usersVO = conventUsersVO(userResult);
 
-        // TODO 生成用户token，存入redis会话
+        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(usersVO), true);
+
         // 同步购物车数据
         syncShopCartData(userResult.getId(), request, response);
         return IMOOCJSONResult.ok(userResult);
