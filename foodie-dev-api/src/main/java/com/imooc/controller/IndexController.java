@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,4 +88,12 @@ public class IndexController {
         return IMOOCJSONResult.ok(list);
     }
 
+    @GetMapping("/setSession")
+    public IMOOCJSONResult setSession(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        session.setAttribute("userInfo", "new user");
+        session.setMaxInactiveInterval(3600);
+        session.getAttribute("userInfo");
+        return IMOOCJSONResult.ok();
+    }
 }
